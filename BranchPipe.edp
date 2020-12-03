@@ -1,0 +1,36 @@
+int n, N1, N2;
+n = 3; N1 = 10; N2 = 10;
+
+real w0, w1, h0, h1, theta, w02, w12, ct, st;
+w0 = 1.0; w1 = 1.0;
+h0 = 4.0; h1 = 4.0;
+theta = pi/6;
+
+w02 = 0.5*w0; w12 = 0.5*w1;
+ct = cos(theta); st = sin(theta);
+
+real[int] pos=[
+    -h0,            w02,
+    -h0,            -w02,
+    w02*ct/st-w12/st,  -w02,
+    h1*ct-w12*st,     -h1*st-w12*ct,
+    w12*st+h1*ct,     w12*ct-h1*st,
+    w12*ct*ct/st+w12*st,0,
+    w12*st+h1*ct,     -w12*ct+h1*st,
+    h1*ct-w12*st,     h1*st+w12*ct,
+    w02*ct/st-w12/st,  w02];
+
+border Gamma1(t=0.0,1.0) { x=(1.0-t)*pos[0]+t*pos[2];	y=(1.0-t)*pos[1]+t*pos[3];	label=1;}
+border Gamma2(t=0.0,1.0) { x=(1.0-t)*pos[2]+t*pos[4];	y=(1.0-t)*pos[3]+t*pos[5];  label=2;}
+border Gamma3(t=0.0,1.0) { x=(1.0-t)*pos[4]+t*pos[6];	y=(1.0-t)*pos[5]+t*pos[7];	label=2;}
+border Gamma4(t=0.0,1.0) { x=(1.0-t)*pos[6]+t*pos[8];	y=(1.0-t)*pos[7]+t*pos[9];	label=3;}
+border Gamma5(t=0.0,1.0) { x=(1.0-t)*pos[8]+t*pos[10];	y=(1.0-t)*pos[9]+t*pos[11];	label=4;}
+border Gamma6(t=0.0,1.0) { x=(1.0-t)*pos[10]+t*pos[12];	y=(1.0-t)*pos[11]+t*pos[13];label=4;}
+border Gamma7(t=0.0,1.0) { x=(1.0-t)*pos[12]+t*pos[14];	y=(1.0-t)*pos[13]+t*pos[15];label=5;}
+border Gamma8(t=0.0,1.0) { x=(1.0-t)*pos[14]+t*pos[16];	y=(1.0-t)*pos[15]+t*pos[17];label=6;}
+border Gamma9(t=0.0,1.0) { x=(1.0-t)*pos[16]+t*pos[0];	y=(1.0-t)*pos[17]+t*pos[1]; label=6;}
+
+mesh Th=buildmesh(Gamma1(N1*n)+Gamma2(N2*n)+Gamma3(N2*n)+Gamma4(N1*n)
++Gamma5(N2*n)+Gamma6(N2*n)+Gamma7(N1*n)+Gamma8(N2*n)+Gamma9(N2*n));
+
+plot(Th);
